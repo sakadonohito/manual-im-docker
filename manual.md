@@ -19,7 +19,9 @@ Dockerのインストール
 
 ### Dockerのインストール
 
-Dockerはお手元のOSによってインストールの方法が別々にあります。
+まずはローカルに Docker が実行できる環境を作りましょう。以下のドキュメントを参考にしてください。Mac では Docker Toolbox をインストールする方法と Docker for Mac をインストールする方法の2通りがあります。Windows では Docker Toolbox をインストールする方法と Docker for Windows をインストールする方法の2通りがあります。
+
+OSのバージョンによってはインストールの選択肢がDocker Toolboxのみとなります。
 
 #### macOSにDockerをセットアップする場合
 
@@ -136,6 +138,52 @@ docker push hogehoge/im:1.0
 のようにコマンドを入力します。hogehoge/im:1.0は前項の例の流用です。dockerイメージ名:tagという構文です。
 ※latestというtagでイメージを作成してpushした場合はDockerHubからpullする際にtagを省略してDockerイメージをpull出来るようになります。
 
+Dockerコンテナの中身を分割する
+=====
+
+一つのDockerイメージに全てを詰め込むのはポータビリティが高いですが、本当はDockerの思想に反します。
+一つのDOckerコンテナには一つの役割にするのが理想とされています。Webサーバー、DBサーバー、さらに分割するなら永続データと
+コンテナを分けてみましょう。※PHPをApacheで動かす前提で説明しますので、ここではPHPとWebサーバー(Apache)は分けません。
+
+### docker-composeを使う
+
+上記のコンテナ分割を行うと、1つのアプリのために幾つものDockerコンテナをセットアップして起動しないといけなくなりちょっと煩雑になります。Dockerにはその煩雑さを解消するため、docker-composeというツールが有りますので、使ってみましょう。Dockerをインストールすると一緒についてきます。
+
+細かい内容説明はドキュメントを参照してください。完成形をpullしましょう。
+任意のディレクトリで以下のコマンドを実行し、githubからdocker-composeようの設定ファイルをcloneします。
+
+```
+git clone https://github.com/sakadonohito/im-compose.git 
+```
+
+cloneした内容に*docker-compose.yml*という設定ファイルがあります。ここにどういったDockerコンテナの起動に関する設定を連携させたいコンテナ分だけ記述します。YAMLファイルについての説明はここでは割愛します。
+このdocker-compose.ymlで扱うMySQLとPHP(with Apache)のDocker起動設定を記載しています。また、データコンテナ用の設定も書いてあります。
+実はこのcloneした内容には2つ足りないものが有りますので、別途用意してください、
+- INTER-Mediatorで使うMySQLのサンプルデータを流し込むSQLファイル(sample_schema_mysql.sql)
+  - INTER-Mediatorをダウンロードした際に内包しているsample_schema_mysql.txtファイルをsample_schema_mysql.sqlに拡張子変更してください。
+  - sample_schema_mysql.sqlをmysql/tmpディレクトリに配置してください。
+- INTER-Mediatorそのもの。
+  - INTER-Mediatorをapache/webrootディレクトリに*im*という名前に変更して配置してください。
+  
+上記の追加作業を行ったら、以下のコマンドを実行してください。
+
+```
+docker-compose up -d
+```
+
+設定ファイルの内容に従って、イメージをpullしてデーモンで起動してくれます。
+http://192.168.99.100/im/Samples にアクセスしてみてください。サンプルの画面が見えると思います。
+今回の設定では、ローカルに配置したINTER-MediatorをDockerコンテナにマウントして使っていますので、ローカル上でINTER-Mediatorを編集すると、それが反映されます。htmlファイルを編集して画面を更新してみてください。
+
+コンテナを停止して削除するには以下のコマンドを実行します。
+
+```
+docker-compose stop
+docker-compose rm
+```
+
+データコンテナ用のDockerコンテナも削除するのかと聞いてきますが、ここでは「y」を選択してください。
+
 さいごに
 =====
 
@@ -149,6 +197,7 @@ INTER-MediatorのDockerイメージの作成についての説明は以上にな
 - AWSのElasticBeanstalk上で起動する。
 - AWSのElasticContainerService上で起動する。
 - HerokuというPaaSサービス上で起動する。
+- ArukasというDocker専用のPaaSサービス上で起動する。
 
 他にも、開発環境やテスト環境として利用することも可能です。
 手軽にINTER-Mediatorを動かす環境としてDockerを是非活用してください。

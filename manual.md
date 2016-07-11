@@ -26,9 +26,9 @@ OSのバージョンによってはインストールの選択肢がDocker Toolb
 #### macOSにDockerをセットアップする場合
 
 macOSの場合、Docker Toolboxを入れる方法とDocker for Macを入れる方法があります。
-既にVirtualBoxを使用している場合は[Docker Toolbox](https://www.docker.com/products/docker-toolbox)をダウンロードしてインストールします。
+既にVirtualBoxを使用している場合は[Docker Toolbox](https://www.docker.com/products/docker-toolbox)をダウンロードしてインストールします(ダウンロードに結構時間がかかるかもしれません...)。
 
-仮想化ソフトウェアを一度もインストールしたことがないのでしたらVirtualBoxをインストールの上、Docker Toolboxを入れてもいいですし、[Docker for Mac](https://docs.docker.com/docker-for-mac/)を入れても構いません。
+仮想化ソフトウェアを一度もインストールしたことがないのでしたらDocker Toolboxを入れてもいいですし、[Docker for Mac](https://docs.docker.com/docker-for-mac/)を入れても構いません。※Docker Toolboxのインストーラの中でVirtualboxのインストールが行われます。
 Docker for Mac は、macOSのxhyveを使っています。よく分からない場合やxhyveが信用ならない場合はDocker Toolboxでのセットアップを採用してください。
 
 ここではDockerの詳しい説明は行いません。
@@ -36,15 +36,18 @@ Docker for Mac は、macOSのxhyveを使っています。よく分からない�
 #### WindowsにDockerをセットアップする場合
 
 Windows7(64bit)以降であればWindowsでもDockerを動かすことが出来ます。
-[Docker Toolbox](https://www.docker.com/products/docker-toolbox)のwindows版をインストールします。
+[Docker Toolbox](https://www.docker.com/products/docker-toolbox)のwindows版をインストールします(ダウンロードに結構時間がかかるかもしれません...)。※Docker Toolboxのインストーラの中でVirtualboxのインストールが行われます。
 Windows10 Proに限ってはHyper-Vを利用する[Docker for Windows](https://docs.docker.com/docker-for-windows/)のインストールが簡単です。
 ※Docker for Windowsは2016/07/05時点ではWindows 10 Pro、Enterprise、Educationのみ対応ですが将来的には他のWindows10もサポートする予定だそうです。
+※Docker for WindowsではHyper-Vを使います。お使いのPCの構成によってはHyper-Vの構成と再起動が入ります。
 ※Windows用のインストールでウィザード内でKitematicのインストールチェックボックスは外さないようにしてください。後で使います。
 
 #### KitematicでDockerを試す
 
 Dockerの便利ツールの中にKitematicというものがあります。Dockerのお手軽さを体験するために、Kitematicを使ってみましょう。
 KitematicはDockerをGUIで操作するツールです。Dockerのインストール時に一緒に入ってるはずです。
+※Docker for mac の場合は別途ダウンロードが必要です。ダウンロードしたものをアプリケーションフォルダに入れてください。
+※WindowsでDocker Toolboxをインストールした場合でKitematicの最初の起動に失敗した場合、Hyper-Vを使おうとしている時があります、選択肢にVirtualboxを使うがありますので、そちらで再度起動を試してください。
 Kitematicを起動すると真ん中にDockerHubで公開されているDockerイメージのお薦めなどが表示されています。
 ここでは検索して任意のDockerイメージを探すことも出来ます。
 虫眼鏡マークの検索欄に
